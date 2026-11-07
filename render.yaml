@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: enem-correcao
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false
+      - key: NVIDIA_API_KEY
+        sync: false
+      - key: PYTHONPATH
+        value: /opt/render/project/src
+      - key: CHROMA_PERSIST_DIR
+        value: /opt/render/project/src/chroma_db
+      - key: FEW_SHOTS_PATH
+        value: /opt/render/project/src/data/few_shots/few_shots.json
+      - key: GUIDELINES_DIR
+        value: /opt/render/project/src/data/matriz
+    disk:
+      name: chroma-db
+      mountPath: /opt/render/project/src/chroma_db
+      sizeGB: 1
